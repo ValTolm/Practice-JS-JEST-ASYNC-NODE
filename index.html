@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>JS </title>
+        <!-- <script>
+            document.write("Начальный текст");
+        </script> -->
+        <script type="text/javascript" src="asyncFunc.js"></script>
+        <script type="text/javascript" defer src="loadPage.js"></script>
+    </head>
+    <body>
+        <!-- <p id="status">Страница загружена</p> -->
+        <!-- <p id="p1"></p> -->
+
+
+        <h2>Первый заголовок</h2>
+        <script>
+            document.write("Первый текст");
+        </script>
+        <h2>Второй заголовок</h2>
+        <script>
+            document.write("Второй текст")
+        </script>
+
+        <!-- <script>
+            var strSum = prompt("Введите сумму вклада", 1000);
+            var strPercent = prompt("Введите процентную ставку", 10);
+            var sum = parseInt(strSum);
+            var procent = parseInt(strPercent);
+            sum = sum + sum * procent / 100;
+            alert("После начисления процентов сумма вклада составит: " + sum);
+        </script> -->
+
+        <!-- <script>
+            function dima(n,r){
+                if(!isNaN(n)) return true;
+                else if(r) {
+                    if (r.a == 10) {
+                        return 10**2;
+                    }
+                }
+                return false;
+            }
+
+            let b = dima("string");
+            console.log(b);
+        </script> -->
+
+        <!-- <script>          
+            function dima2(n,r){
+                var result = false;
+
+                !isNaN(n) || (typeof n === "string") && (result = true);
+
+                r && r.a == 10 && (result = 10**2);
+                return result;
+            }
+
+            var b = dima2("Avd" , {a:8});
+            console.log(b);
+
+
+        </script> -->
+
+        <!-- <script>
+            function Dima3 (label) {
+                this.label = '';
+                this.showLabel = function() {
+                    console.log(this.label);
+                }
+                this.validateLabel = function (label) {
+                    if (typeof label ==="string") {
+                        this.label = label;
+                    } else {
+                        console.log("Ошибка! Label может быть только строкой");
+                    }
+                }
+                this.getLabel=function(){
+                    return this.label=label;
+                }
+                this.setLabel = function(label){
+                    this.validateLabel(label)
+                };
+
+                this.init = function () {
+                    this.validateLabel(label)
+                }
+
+                this.init()
+            }
+        
+            var label = new Dima3(123);
+
+            label.showLabel();
+            label.setLabel(456);
+            label.showLabel();
+
+        
+        </script> -->
+
+        <!-- <script>
+            function Dima3 (label) {
+                this.label = '';
+                this.showLabel = function() {
+                        console.log(this.label);
+                }
+
+                this.validateLabel = function (label) {
+                    var result;
+                    
+                    if (typeof label ==="string") { 
+                        result = true;
+                    } else {
+                        console.log("Ошибка! Label может быть только строкой");
+                        result=false;
+                    };
+                    return result;
+                    
+                }
+
+                this.setLabel = function(label){
+                    this.validateLabel(label) && (this.label = label) ;
+                }
+                
+                this.init = function () {
+                    this.setLabel(label);
+                }
+
+                this.init()
+            }
+        
+            var label = new Dima3("123");
+            label.showLabel();
+            label.setLabel(456);
+            label.showLabel();
+            label.setLabel("456");
+            label.showLabel();
+
+
+            var foo = function(arg1) {
+                this.showArg = function () {
+                    return arg1
+                }
+            }
+
+            var arg1 = new foo(10)
+
+            arg1.showArg()
+
+        </script> -->
+
+        <script>
+            // function formatNameD(name, local, gender, rules) {
+            //     return rules[local].gender[gender].prefix + name
+            // }
+
+            function Person (fullName, local, gender){
+                this.fullName = '';
+                this.fullNameSeparator = " ";
+                this.local = {
+                    en : {gender : {male : {prefix : "Mr."} , female : {prefix : "Mrs."}}, format: 'prefixDB fnDB lnDB'},
+                    ru : {gender : {male : {prefix : null} , female : {prefix : null }}, format: 'lnDB, fnDB'}, 
+                    de : {gender : {male : {prefix : "Herr"} , female : {prefix : "Frau" }}, format: 'prefixDB fnDB lnDB'}
+                };
+
+                this.replacedName = function() { 
+                    return this.nameFormat
+                        .replace(/lnDB/gi, this.lastName)
+                        .replace(/fnDB/gi, this.firstName)
+                        .replace(/prefixDB/gi, this.prefix);
+                    
+                }
+
+                this.showName = function(){
+                    console.log(this.localName);
+                }
+
+                this.validateFullName = function (fullName) {
+                    var result;
+
+                    if (typeof fullName ==="string") { 
+                        result = true;
+                    } else {
+                        console.log("Ошибка! Fullname может быть только строкой");
+                        result = false;
+                    };
+                    return result;
+                }
+
+
+                this.splitFullName = function() {
+                    var fullNameParts = this.fullName.split(this.fullNameSeparator),
+                        processedNameParts = []; 
+
+                    for (let i = 0; i < fullNameParts.length; i++) {
+                        processedNameParts[i] = fullNameParts[i][0].toUpperCase() + fullNameParts[i].substr(1);
+                    }
+
+                    this.lastName = processedNameParts.pop(),
+                    this.firstName = processedNameParts.join(' ');
+                }                
+
+
+                this.setPrefix = function (fullName, local, gender, prefixRule) {
+                    return prefixRule[local].gender[gender].prefix //+ fullName
+                };
+
+                this.setNameFormat = function (local, formatRule){
+                    return formatRule[local].format;
+                }
+
+
+                this.setFullName = function(fullName, local, gender) {
+                    if (this.validateFullName(fullName)) {
+                        this.fullName = fullName;
+                        this.splitFullName(this.fullName);
+
+                        this.prefix = this.setPrefix(this.fullName, local, gender, this.local);
+
+                        this.nameFormat = this.setNameFormat(local, this.local);
+
+                        this.localName = this.replacedName()
+                        
+                        }
+                    }
+                
+                this.init = function() {
+                    this.setFullName(fullName, local, gender);
+                }
+
+                this.init();
+
+            }
+            const person1 = new Person("dim tim Dimuch", "de", "male");
+            person1.showName();
+            const person2 = new Person("Tom tim Timuch", "ru", "female");
+            person2.showName();
+
+
+            function createGroom(fullName, local){
+                return new Person(fullName, local, "male")
+            }
+            var groom = createGroom('oleg', 'ru')
+            groom.showName();
+
+
+            function Bride(fullName, local){
+                Person.call(this, fullName, local, "female");                
+            }
+            // Bride.prototype = Object.create(Person.prototype);
+            var bride = new Bride("Lisa", "de", "male");
+            bride.showName();
+
+            const person3 = [
+                {fullName:"Kar Kur Karuch", local: "ru", gender: "male"},
+                {fullName:"Jennifer Joanna Aniston", local: "en", gender:"female"}, 
+                {fullName:"Till Lindemann", local:"de", gender:"male"},
+            ];
+            var personArray = person3.map(function(person){
+                return new Person(person.fullName, person.local, person.gender)
+            });
+            personArray.map(function(per){per.showName()});
+
+
+            var emptyArray = [];
+
+            function createPerson(fullName, local, gender, number){
+                if (number > 0) {
+                    for (let i=1; i <= number; i++ ){
+                        emptyArray.push(new Person(fullName + i, local, gender));
+                    };
+                }
+            };
+                
+            var personCount = createPerson("Cupcake", "en", "male", 2);
+            console.log(emptyArray);
+
+
+            // var personMap = [];
+            // personMap.length = number;
+
+            var people4 = createPersonMap("Powder", "de", "female", 3);
+
+            function createPersonMap(fullName, local, gender, number){
+                if(Number.isInteger(number) &&  number>= 0){
+                    var personMap = new Array(number);
+                    window.personMap= personMap;
+                    var b = personMap.fill(null).map((per, i)=> new Person(fullName+i, local, gender));
+                    window.b= b;
+
+                } else {
+                console.log("Ошибка! number может быть только целым положительным числом");
+            }
+            } 
+            console.log(b);
+
+            var products = [["vegetables", ["tomato", "cucumber", "potato"]],
+            ["fruits", ["apple", "mango", "pear", "banana"]],
+            ["berries", ["strawberry", "watermelon", "cranberry"]]];
+
+            var i = products.length;
+
+            
+            // var returnList = products.map((prod, index)=> products[index][0]);
+            var returnList = products.map(function(prod, index){
+                return function() {return products[index][1] }});
+
+            // console.log(returnList[0]());
+            console.log(returnList.map((prod, index) => returnList[index]()));
+            console.log(Array.isArray(products));
+            console.log(returnList);
+
+
+
+
+            function matrixAB (a, b){
+                return [...Array(a)].map((_,i) =>[...Array(b).keys()].map((_,k) => (b*(i+1))-(b-k)))
+
+            }
+          
+            var createMatrix = matrixAB(2, 3);
+            console.log(createMatrix);
+
+
+            var parentsAndChildren = [
+                {fullName: "Homer Jay Simpson", local: "en", gender:"male", children:
+                    [{fullName: "Lisa Marie Simpson", local: "en", gender: "female"}, 
+                    {fullName:"Bartholomew Jo-Jo Simpson", local: "en", gender: "male"},
+                    {fullName: "Margaret Evelyn Simpson", local: "en", gender:"female"}]},
+                {fullName: "Nedward Flanders", local: "en", gender: "male", children:
+                    [{fullName: "Rodney Flanders", local: "en", gender: "male"}, 
+                    {fullName:"Todd Flanders", local: "en", gender: "male"}]},
+                {fullName: "Charles Montgomery Plantagenet Schicklgruber Burns", local:"en", gender:"male", children:
+                    [{fullName: "Lawrence Montgomery Burns", local: "en", gender: "male"}]}
+                ]
+            var createParents = parentsAndChildren.map(function(m){
+                return new Person(m.fullName, m.local, m.gender)
+            });
+            createParents.map(function(per){per.showName()});
+
+            ;
+            var createChildren = parentsAndChildren.map((parent, k) => parent.children.map((child) => new Person (child.fullName, child.local, child.gender)/*.map((child) => child.showName())*/)).flat();
+
+            console.log(createChildren);
+            // console.log(parentsAndChildren);
+            createChildren.map((person) => person.showName());
+
+
+            var red = [parentsAndChildren.reduce(
+                function(prev, parent){
+                    return [...prev, ...parent.children]
+                },[])]
+                    .concat(parentsAndChildren).flat().map(function (i){
+                        return new Person(i.fullName, i.local, i.gender)
+                    })
+            console.log(red);
+
+            var red1 = parentsAndChildren.map((parent)=> [
+                new Person(parent.fullName, parent.local, parent.gender), 
+                ...parent.children.map(child => new Person(child.fullName, child.local, child.gender))
+            ]).flat()
+
+            console.log(red1)
+
+
+            // AJAX
+
+            // let xhttp = new XMLHttpRequest();
+
+            // xhttp.onreadystatechange = function(){
+            //     if(this.readyState == 4 && this.status == 200){
+            //         myFunction(this.responseText)
+            //     }
+            // }
+
+            // xhttp.open("GET", "https://www.google.ru/maps/@47.2476749,38.9161218,13z?hl=en&authuser=0");
+            // xhttp.send();
+
+            // function myFunction(data){
+            //     console.log(data);
+            // }
+
+
+            // let xhttp1 = new XMLHttpRequest();
+            // xhttp1.onreadystatechange = function(){
+            //     try {if(this.readyState == 4 && this.status == 200){
+            //         translate (this.responseText);
+            //         }      
+            //     } catch (error) {
+            //         console.error("Ошибка:" [error]); 
+            //     }
+            // }
+
+            // xhttp1.open("GET", "https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20170326T122233Z.a775052e7d82268d.f080a48637924d2c2838d232b7b7372d38de4506&text=apple&lang=ru");
+            // xhttp1.send();
+
+            // function translate(text, lang){
+            //     console.log(text, lang)
+            // }
+
+
+            // //FETCH
+            // fetch('https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20170326T122233Z.a775052e7d82268d.f080a48637924d2c2838d232b7b7372d38de4506&text=apple&lang=ru').then(function(response) {
+            //     if(response.ok) {
+            //         translate(this.responseText);
+            //     } else {
+            //         console.log('Network request failed with response ' + response.status + ': ' + response.statusText);
+            //     }
+            //     });
+
+            // function translate(text, lang){
+            //     console.log(text, lang)
+            // }
+
+            // // TRY...CATCH
+
+            // const requestURL = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20170326T122233Z.a775052e7d82268d.f080a48637924d2c2838d232b7b7372d38de4506&text=apple&lang=ru";
+
+            // function sendRequest(text, lang, method, url){
+            //     return new Promise(function(resolve, reject) {
+            //         var request = new XMLHttpRequest();
+            //         request.open(method, url);
+            //         request.responseType= "json"
+            //         request.onload = function(){
+            //             try {
+            //                 resolve(request.responseText);
+            //             } catch (error) {
+            //                 reject (new Error ("Request failed with response " + request.response.code + ": " + request.response.message));
+            //                 // throw("Ошибка"+deserResponse.message)
+            //             }
+            //         }
+            //         request.send();
+            //     })
+            // }
+            // sendRequest("apple","ru", "GET", requestURL)
+            //    .then((value)=> console.log("Перевод: ", value))
+            //    .catch((error) => console.log (error))
+
+
+            // // XHR
+            // translate('apple', 'ru', console.log)
+
+            // function translate(text, lang, cb){
+            //     let xhttp2 = new XMLHttpRequest(); 
+
+            //     xhttp2.onload = function(response){
+            //         var deserializedResponse = JSON.parse(this.response);
+            //         if(deserializedResponse.ok) {
+            //             cb(this.responseText);
+            //         } else {
+            //             console.log('Network request failed with response ' + deserializedResponse.code + ': ' + deserializedResponse.message);
+            //         }
+            //         };
+
+            //     xhttp2.open("GET", "https://translate.yandex.net/api/v1.5/tr.json/translate?key=trnsl.1.1.20170326T122233Z.a775052e7d82268d.f080a48637924d2c2838d232b7b7372d38de4506&text=apple&lang=ru");
+            //     xhttp2.send();
+            // }
+
+
+            //https://jsonplaceholder.typicode.com/
+            // const requestURLUsers = "https://jsonplaceholder.typicode.com/users";
+
+            // function sendRequestUsers(method, url){
+            //     return new Promise(function(resolve, reject) {
+            //         var request = new XMLHttpRequest();
+            //         request.open(method, url);
+            //         request.responseType= "json"
+            //         request.onload = function(){
+            //             try {
+            //                 // resolve(/*request.response.map((user)=> user.name) +*/ request.response.map((user) => user.email).filter(el => el.toLowerCase().indexOf(".biz".toLowerCase()) !== -1));
+            //                 resolve(request.response.filter((el => el.email.toLowerCase().indexOf(".biz".toLowerCase()) !== -1)).map(user => user.name))
+            //             } catch (error) {
+            //                 reject (new Error ("Request failed with response " + request.response.code + ": " + request.response.message));
+            //             }
+            //         }
+            //         request.send();
+            //     })
+            // }
+            // sendRequestUsers("GET", requestURLUsers)
+            //    .then((value)=> console.log(value))
+            //    .catch((error) => console.log (error))
+
+
+            //Request to 2 bases
+            // const requestURLComments = "https://jsonplaceholder.typicode.com/comments";
+
+            // function sendRequest(method, url, elem){
+            //     return new Promise(function(resolve, reject) {
+            //         var request = new XMLHttpRequest();
+            //         request.open(method, url);
+            //         request.responseType= "json"
+            //         request.onload = function(){
+            //             try {
+            //                 resolve(request.response.map((base)=> base[elem]));
+            //             } catch (error) {
+            //                 reject (new Error ("Request failed with response " + request.response.code + ": " + request.response.message));
+            //             }
+            //         }
+            //         request.send();
+            //     })
+            // }
+            // var usersRequest = sendRequest("GET", requestURLUsers, "name")
+            // var commentsRequest = sendRequest("GET", requestURLComments, "body")
+
+            // Promise.all([usersRequest, commentsRequest]).then(values =>{
+            //     console.log(values);
+        
+            //     // var newArray = values[0].map((user, i) => ({user: user, comments: values[1].slice((i+2*i),(3+i*3))}));
+            //     var removedArray = values[0].map((user, i) => ({user: user, comments: values[1].splice(0,3)}));
+
+            //     console.log(removedArray);
+            //     })
+
+
+            //async await
+            // function sendRequestAsync (method, url, elem){
+            //     return new Promise(function(resolve, reject) {
+            //         var request = new XMLHttpRequest();
+            //         request.open(method, url);
+            //         request.responseType= "json"
+            //         request.onload = function(){
+            //             try {
+            //                 resolve(request.response.map((base)=> base[elem]));
+            //             } catch (error) {
+            //                 reject (new Error ("Request failed with response " + request.response.code + ": " + request.response.message));
+            //             }
+            //         }
+            //         request.send();
+            //     })
+            // }
+
+            // async function getResultsAsync() {
+            //     var value1 = await sendRequestAsync("GET", requestURLUsers, "name");
+            //     console.log(value1);
+            //     var value2 = await sendRequestAsync("GET", requestURLComments, "body");
+            //     console.log(value2);
+            //     var removedArray2 = value1.map((user, i) => ({user: user, comments: value2.splice(0,3)}));
+            //     console.log(removedArray2);
+
+
+            // }
+
+            // getResultsAsync();
+
+
+
+            
+
+        </script>
+
+
+
+    </body>
+</html>
